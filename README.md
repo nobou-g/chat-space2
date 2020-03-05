@@ -30,7 +30,7 @@
 |image|string||
 
 ### Association
-- has_many :groups_users
+- belongs_to :users
 
 
 
