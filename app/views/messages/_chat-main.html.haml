@@ -18,7 +18,7 @@
       .message__content
         おはよう！
   .chat-main__send-message
-    %form.new-message{:action => "/", :method => "post"}
+    %form.new-message{action: "/", method: "post"}
       .new-message__text
         %input.login-input-text{type: 'text', placeholder: 'type a message', class: 'input-text'}
         %label{class: 'icon-file'}

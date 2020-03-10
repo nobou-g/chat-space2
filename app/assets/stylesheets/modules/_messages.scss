@@ -5,6 +5,10 @@
 $white: #ffffff;
 $light_blue: #38aef0;
 
+
+
+
+
 .wrapper{
   display: flex;
   .side-bar {
@@ -76,7 +80,15 @@ $light_blue: #38aef0;
           }
         }
         &__edit-btn {
-          @include btn();
+          display: block;
+          margin: 28px 40px 0 0;
+          width: 72px;
+          height: 40px;
+          border: 1px solid $light_blue;
+          text-align: center;
+          line-height: 40px;
+          font-size: 16px;
+          text-decoration: none;        ;
           color: $light_blue;
         }
       }
