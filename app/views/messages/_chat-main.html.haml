@@ -1,0 +1,30 @@
+.chat-main
+  .chat-main__header
+    .top-items
+      .top-items__group-info
+        .group-name
+          test
+        .member-list
+          Member : masa
+      = link_to '#', class: 'top-items__edit-btn' do
+        Edit
+  .chat-main__message-list
+    .message
+      .message__info
+        .user-name
+          masa
+        .send-time
+          2020/01/01 dddddddd
+      .message__content
+        おはよう！
+  .chat-main__send-message
+    %form.new-message{:action => "/", :method => "post"}
+      .new-message__text
+        %input.login-input-text{type: 'text', placeholder: 'type a message', class: 'input-text'}
+        %label{class: 'icon-file'}
+          = icon('fas', 'image')
+          %input{type: 'file', class: 'input-file'}
+      .new-message__submit
+        %input.login-input-text{type: 'submit', value: 'Send', class: 'input-submit'}
+
+  
