@@ -9,7 +9,10 @@
         = link_to edit_user_path(current_user), class: 'edit-mypage' do
           = icon('fas', 'cog')
   .side-bar__group-list
-    .group
-      .group__name
-      .group__lastest-message
-        
+    - current_user.groups.each do |group| 
+      .group
+        =link_to '#' do
+          .group__name
+            = group.name
+          .group__lastest-message
+            まだメッセージはありません
