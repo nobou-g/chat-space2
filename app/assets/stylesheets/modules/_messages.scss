@@ -44,6 +44,23 @@
     &__group-list {
       height: calc(100vh - 100px);
       background-color: #2f3e51;
+      .group　{
+        padding: 20px 20px 0;
+        height: 26px;
+        &__name {
+          height: 15px;
+          font-size: 15px;
+          font-weight: bold;
+          color: $white;
+        }
+        &__lastest-message {
+          height: 11px;
+          font-size: 11px;
+          font-weight: bold;
+          color: $white;
+          padding: 5px 0 0 40px;
+        }
+      }
     }
   }
   
