@@ -1,38 +1,52 @@
 $(function(){
-  function buildHTML(message) {
-    if (message.image) {
-      var html= `<div class="message">
-                  <div class= "message__info">
-                    <div class= "user-name">
-                      ${message.user_name}
-                    <div>
-                    <div class= "send-time">
-                      ${message.created_at}
-                    </div>
-                    <div class= "message__content">
-                      ${message.content}
-                    </div>
-                    <img src=${message.image}>
-                  </div>
-                </div>`
-                return html;
-    } else {
-      var html= `<div class="message">
-                  <div class= "message__info">
-                    <div class= "user-name">
-                      ${message.user_name}
-                    </div>
-                    <div class= "send-time">
-                      ${message.created_at}
-                    </div>
-                    <div class= "message__content">
-                      ${message.content}
-                    </div>
-                  </div>
-                </div>`
-                return html;
-    }
-  }
+
+  let message_user_name= `<div class= "user-name">
+                            ${message.user_name}
+                          <div>`
+              
+  let message_created_at= `<div class= "send-time">
+                            ${message.created_at}
+                          </div>`
+  
+  let message_content= `<div class= "message__content">
+                          ${message.content}
+                        </div>`
+
+  let message_image= `<img src=${message.image}>`
+
+  var buildHTML = function(message) {
+    if (message.content && message.image) {
+      //data-idが反映されるようにしている
+      var html = `<div class="message" data-message-id=` + message.id + `>` +
+        `<div class="message-info">` +
+          message_user_name +
+          message_created_at +
+          message_content +
+          message_image +
+      `</div>` +
+    `</div>`
+
+    } else if (message.content) {
+      //同様に、data-idが反映されるようにしている
+      var html = `<div class="message" data-message-id=` + message.id + `>` +
+        `<div class="message-info">` +
+          message_user_name +
+          message_created_at +
+          message_content +
+        `</div>` +
+      `</div>`
+    } else if (message.image) {
+      //同様に、data-idが反映されるようにしている
+      var html = `<div class="message" data-message-id=` + message.id + `>` +
+        `<div class="message-info">` +
+          message_user_name+
+          message_created_at +
+          message_image +
+        `</div>` +
+      `</div>`
+    };
+    return html;
+  };
 
   $('#new_message').on('submit', function(e){
     e.preventDefault();
@@ -57,6 +71,22 @@ $(function(){
       alert("メッセージ送信に失敗しました");
     });
   });
+
+  var reloadMessages= function() {
+    var last_message_id= $('.message:last').data('message-id');
+    $.ajax({
+      type: 'GET',
+      url: '/api/messages',
+      data: {id: last_message_id},
+      dataType: 'json'
+      .done(function(messages){
+        console.log('success');
+      })
+      .fail(function(){
+        alert('error');
+      })
+    });
+  };
 });
 
 
