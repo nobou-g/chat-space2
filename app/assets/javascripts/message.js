@@ -3,24 +3,24 @@ $(function(){
   var buildHTML = function(message) {
     let message_user_name= `<div class= "user-name">` +
                               message.user_name +
-                            `</div>`
+                            `</div>`;
                             
                             
               
     let message_created_at= `<div class= "send-time">` +
                               message.created_at +
-                            `</div>`
+                            `</div>`;
                             
                             
                               
     
     let message_content= `<div class= "message__content">` +
                             message.content +
-                          `</div>`
+                          `</div>`;
                           
                             
 
-    let message_image= `<img src=${message.image}>`
+    let message_image= `<img src=${message.image}>`;
     
     if (message.content && message.image) {
       //data-idが反映されるようにしている
@@ -82,18 +82,26 @@ $(function(){
   var reloadMessages= function() {
     var last_message_id= $('.message:last').data('message-id');
     $.ajax({
-      type: 'GET',
-      url: '/api/messages',
+      type: 'get',
+      url: 'api/messages',
       data: {id: last_message_id},
-      dataType: 'json'
-      .done(function(messages){
-        console.log('success');
-      })
-      .fail(function(){
-        alert('error');
-      })
+      dataType: 'json' 
+    })
+    .done(function(messages){
+      if (messages !== 0) {
+        var insertHTML= '';
+        $.each(messages, function(i, message){
+          insertHTML += buildHTML(message);
+        })
+        $('.chat-main__message-list').append(insertHTML);
+        $('.chat-main__message-list').animate({ scrollTop: $('.chat-main__message-list')[0].scrollHeight});
+      }
+    })
+    .fail(function(){
+      alert('error');
     });
   };
+  if (document.location.href.match(/\/groups\/\d\/messages/)) {
+    setInterval(reloadMessages, 7000);
+  };
 });
-
-
