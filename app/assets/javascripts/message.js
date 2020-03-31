@@ -1,20 +1,20 @@
 $(function(){
 
-  let message_user_name= `<div class= "user-name">
+  var buildHTML = function(message) {
+    let message_user_name= `<div class= "user-name">
                             ${message.user_name}
                           <div>`
               
-  let message_created_at= `<div class= "send-time">
-                            ${message.created_at}
+    let message_created_at= `<div class= "send-time">
+                              ${message.created_at}
+                            </div>`
+    
+    let message_content= `<div class= "message__content">
+                            ${message.content}
                           </div>`
-  
-  let message_content= `<div class= "message__content">
-                          ${message.content}
-                        </div>`
 
-  let message_image= `<img src=${message.image}>`
-
-  var buildHTML = function(message) {
+    let message_image= `<img src=${message.image}>`
+    
     if (message.content && message.image) {
       //data-idが反映されるようにしている
       var html = `<div class="message" data-message-id=` + message.id + `>` +
