@@ -1,56 +1,47 @@
 $(function(){
 
-  var buildHTML = function(message) {
-    let message_user_name= `<div class= "user-name">` +
-                              message.user_name +
-                            `</div>`;
-                            
-                            
-              
-    let message_created_at= `<div class= "send-time">` +
-                              message.created_at +
-                            `</div>`;
-                            
-                            
-                              
-    
-    let message_content= `<div class= "message__content">` +
-                            message.content +
-                          `</div>`;
-                          
-                            
-
-    let message_image= `<img src=${message.image}>`;
-    
-    if (message.content && message.image) {
-      //data-idが反映されるようにしている
-      var html = `<div class="message" data-message-id= ${message.id}>
-                    <div class="message-info"> 
-                      ${message_user_name} 
-                      ${message_created_at} 
-                      ${message_content}
-                      ${message_image}
-                    </div> 
-                  </div>`
-
+  function buildHTML(message) {
+    if (message.image && message.content) {
+      var html= `<div class="message", data-message-id= ${message.id}>
+                  <div class= "message__info">
+                    <div class= "user-name">
+                      ${message.user_name}
+                    <div>
+                    <div class= "send-time">
+                      ${message.created_at}
+                    </div>
+                    <div class= "message__content">
+                      ${message.content}
+                    </div>
+                    <img src=${message.image}>
+                  </div>
+                </div>`
     } else if (message.content) {
-      //同様に、data-idが反映されるようにしている
-      var html = `<div class="message" data-message-id= ${message.id}>
-                    <div class="message-info"> 
-                      ${message_user_name}
-                      ${message_created_at} 
-                      ${message_content}
-                    </div> 
-                  </div>`
+      var html= `<div class="message", data-message-id= ${message.id}>
+                  <div class= "message__info">
+                    <div class= "user-name">
+                      ${message.user_name}
+                    </div>
+                    <div class= "send-time">
+                      ${message.created_at}
+                    </div>
+                    <div class= "message__content">
+                      ${message.content}
+                    </div>
+                  </div>
+                </div>`
     } else if (message.image) {
-      //同様に、data-idが反映されるようにしている
-      var html = `<div class="message" data-message-id= ${message.id}>
-                    <div class="message-info"> 
-                      ${message_user_name}
-                      ${message_created_at} 
-                      ${message_image}
-                    </div> 
-                  </div>`
+      var html= `<div class="message", data-message-id= ${message.id}>
+                  <div class= "message__info">
+                    <div class= "user-name">
+                      ${message.user_name}
+                    <div>
+                    <div class= "send-time">
+                      ${message.created_at}
+                    </div>
+                    <img src=${message.image}>
+                  </div>
+                </div>`
     };
     return html;
   };
@@ -82,13 +73,13 @@ $(function(){
   var reloadMessages= function() {
     var last_message_id= $('.message:last').data('message-id');
     $.ajax({
-      type: 'get',
+      type: 'GET',
       url: 'api/messages',
       data: {id: last_message_id},
       dataType: 'json' 
     })
     .done(function(messages){
-      if (messages !== 0) {
+      if (messages.length !== 0) {
         var insertHTML= '';
         $.each(messages, function(i, message){
           insertHTML += buildHTML(message);
@@ -101,7 +92,7 @@ $(function(){
       alert('error');
     });
   };
-  if (document.location.href.match(/\/groups\/\d\/messages/)) {
+  if (document.location.href.match(/\/groups\/\d+\/messages/)) {
     setInterval(reloadMessages, 7000);
   };
 });
