@@ -6,15 +6,15 @@ $(function(){
                   <div class= "message__info">
                     <div class= "user-name">
                       ${message.user_name}
-                    <div>
+                    </div>
                     <div class= "send-time">
                       ${message.created_at}
                     </div>
-                    <div class= "message__content">
-                      ${message.content}
-                    </div>
-                    <img src=${message.image}>
                   </div>
+                  <div class= "message__content">
+                      ${message.content}
+                  </div>
+                  <img src=${message.image} class= 'message__image'>
                 </div>`
     } else if (message.content) {
       var html= `<div class="message", data-message-id= ${message.id}>
@@ -25,9 +25,9 @@ $(function(){
                     <div class= "send-time">
                       ${message.created_at}
                     </div>
-                    <div class= "message__content">
-                      ${message.content}
-                    </div>
+                  </div>
+                  <div class= "message__content">
+                    ${message.content}
                   </div>
                 </div>`
     } else if (message.image) {
@@ -35,12 +35,12 @@ $(function(){
                   <div class= "message__info">
                     <div class= "user-name">
                       ${message.user_name}
-                    <div>
+                    </div>
                     <div class= "send-time">
                       ${message.created_at}
                     </div>
-                    <img src=${message.image}>
                   </div>
+                  <img src=${message.image} class= 'message__image'>
                 </div>`
     };
     return html;
@@ -94,5 +94,6 @@ $(function(){
   };
   if (document.location.href.match(/\/groups\/\d+\/messages/)) {
     setInterval(reloadMessages, 7000);
+    // $('.side-bar__group-list').css('overflow', 'scroll');
   };
 });
