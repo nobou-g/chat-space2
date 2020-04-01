@@ -1,7 +1,8 @@
 $(function(){
+
   function buildHTML(message) {
-    if (message.image) {
-      var html= `<div class="message">
+    if (message.image && message.content) {
+      var html= `<div class="message", data-message-id= ${message.id}>
                   <div class= "message__info">
                     <div class= "user-name">
                       ${message.user_name}
@@ -15,9 +16,8 @@ $(function(){
                     <img src=${message.image}>
                   </div>
                 </div>`
-                return html;
-    } else {
-      var html= `<div class="message">
+    } else if (message.content) {
+      var html= `<div class="message", data-message-id= ${message.id}>
                   <div class= "message__info">
                     <div class= "user-name">
                       ${message.user_name}
@@ -30,9 +30,21 @@ $(function(){
                     </div>
                   </div>
                 </div>`
-                return html;
-    }
-  }
+    } else if (message.image) {
+      var html= `<div class="message", data-message-id= ${message.id}>
+                  <div class= "message__info">
+                    <div class= "user-name">
+                      ${message.user_name}
+                    <div>
+                    <div class= "send-time">
+                      ${message.created_at}
+                    </div>
+                    <img src=${message.image}>
+                  </div>
+                </div>`
+    };
+    return html;
+  };
 
   $('#new_message').on('submit', function(e){
     e.preventDefault();
@@ -57,6 +69,30 @@ $(function(){
       alert("メッセージ送信に失敗しました");
     });
   });
+
+  var reloadMessages= function() {
+    var last_message_id= $('.message:last').data('message-id');
+    $.ajax({
+      type: 'GET',
+      url: 'api/messages',
+      data: {id: last_message_id},
+      dataType: 'json' 
+    })
+    .done(function(messages){
+      if (messages.length !== 0) {
+        var insertHTML= '';
+        $.each(messages, function(i, message){
+          insertHTML += buildHTML(message);
+        })
+        $('.chat-main__message-list').append(insertHTML);
+        $('.chat-main__message-list').animate({ scrollTop: $('.chat-main__message-list')[0].scrollHeight});
+      }
+    })
+    .fail(function(){
+      alert('error');
+    });
+  };
+  if (document.location.href.match(/\/groups\/\d+\/messages/)) {
+    setInterval(reloadMessages, 7000);
+  };
 });
-
-
